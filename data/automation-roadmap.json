@@ -259,5 +259,157 @@
       "이번 작업에서 SQL 실행 금지"
     ],
     "isCurrent": false
+  },
+  {
+    "id": "roadmap-013",
+    "title": "3.0.5: Supabase DDL draft",
+    "description": "data/*.json 구조를 Supabase 테이블로 옮기기 위한 SQL DDL 초안과 JSON to table 매핑 문서를 작성한다. 실제 DB 연결과 SQL 실행은 하지 않는다.",
+    "status": "done",
+    "progress": 100,
+    "category": "DB Draft",
+    "targetDate": "2026-06-12",
+    "createdAt": "2026-06-12T17:30:00+09:00",
+    "updatedAt": "2026-06-12T17:30:00+09:00",
+    "dataSource": "mock",
+    "futureTableName": "automation_import_logs",
+    "automationReady": false,
+    "stage": 13,
+    "todos": [
+      "JSON file to Supabase table mapping",
+      "core Life OS tables DDL draft",
+      "automation logs DDL draft",
+      "deferred weekly logs DDL draft",
+      "legacy_json_id migration strategy note",
+      "RLS/Auth todo only",
+      "SQL execution prohibited in this step"
+    ],
+    "requiredSkills": ["PostgreSQL DDL", "Supabase planning", "JSON migration design"],
+    "blockers": [
+      "Supabase 프로젝트 미생성",
+      "JSON string id to uuid 매핑 검토 필요",
+      "RLS/Auth 정책 미정",
+      "실제 migration 실행 금지"
+    ],
+    "isCurrent": false
+  },
+  {
+    "id": "roadmap-014",
+    "title": "3.1: JSON to Supabase migration plan",
+    "description": "현재 data/*.json 구조를 Supabase 테이블로 이전하기 위한 legacy_json_id, uuid 매핑, dry-run, rollback 전략을 문서화한다.",
+    "status": "done",
+    "progress": 100,
+    "category": "Migration Planning",
+    "targetDate": "2026-06-12",
+    "createdAt": "2026-06-12T17:45:00+09:00",
+    "updatedAt": "2026-06-12T17:45:00+09:00",
+    "dataSource": "mock",
+    "futureTableName": "automation_import_logs",
+    "automationReady": false,
+    "stage": 14,
+    "todos": [
+      "legacy_json_id strategy",
+      "JSON id to uuid mapping plan",
+      "table migration order",
+      "foreign key connection order",
+      "upsert key rules",
+      "rollback strategy",
+      "dry-run strategy",
+      "validation query candidates",
+      "backup strategy"
+    ],
+    "requiredSkills": ["migration planning", "data integrity", "PostgreSQL"],
+    "blockers": [
+      "실제 migration script 구현 보류",
+      "SQL 실행 금지",
+      "Supabase 연결 금지"
+    ],
+    "isCurrent": false
+  },
+  {
+    "id": "roadmap-015",
+    "title": "3.2: Data adapter interface design",
+    "description": "JSON persistence와 future Supabase persistence를 교체 가능하게 만들 repository interface 초안을 정의한다.",
+    "status": "done",
+    "progress": 100,
+    "category": "Adapter Planning",
+    "targetDate": "2026-06-12",
+    "createdAt": "2026-06-12T17:45:00+09:00",
+    "updatedAt": "2026-06-12T17:45:00+09:00",
+    "dataSource": "mock",
+    "futureTableName": "automation_import_logs",
+    "automationReady": false,
+    "stage": 15,
+    "todos": [
+      "repository interface design",
+      "common list/get/upsert/update/remove methods",
+      "date/week/month query contracts",
+      "domain type reuse",
+      "runtime implementation pending"
+    ],
+    "requiredSkills": ["TypeScript interfaces", "repository pattern", "adapter design"],
+    "blockers": [
+      "현재 runtime 코드 대규모 수정 금지",
+      "Supabase client 생성 금지"
+    ],
+    "isCurrent": false
+  },
+  {
+    "id": "roadmap-016",
+    "title": "3.3: Supabase local setup pending",
+    "description": "Supabase 프로젝트, 환경변수, package 설치, local DB setup은 실제 작업 환경이 확정될 때까지 보류한다.",
+    "status": "planned",
+    "progress": 0,
+    "category": "DB Setup",
+    "targetDate": "2026-06-25",
+    "createdAt": "2026-06-12T17:45:00+09:00",
+    "updatedAt": "2026-06-12T17:45:00+09:00",
+    "dataSource": "mock",
+    "futureTableName": "automation_import_logs",
+    "automationReady": false,
+    "stage": 16,
+    "todos": [
+      "Supabase 프로젝트 생성",
+      "환경변수 승인",
+      "Supabase package 설치 승인",
+      "schema draft review",
+      "migration dry-run 준비"
+    ],
+    "requiredSkills": ["Supabase setup", "environment management"],
+    "blockers": [
+      "현재 PC/환경에서 실제 Supabase 연결 금지",
+      ".env.local 생성 금지",
+      "SQL 실행 금지"
+    ],
+    "isCurrent": false
+  },
+  {
+    "id": "roadmap-017",
+    "title": "3.4: Supabase runtime adapter pending",
+    "description": "JSON adapter와 동일한 repository interface를 구현하는 Supabase runtime adapter는 migration 검증 후 진행한다.",
+    "status": "planned",
+    "progress": 0,
+    "category": "Adapter Implementation",
+    "targetDate": "2026-06-30",
+    "createdAt": "2026-06-12T17:45:00+09:00",
+    "updatedAt": "2026-06-12T17:45:00+09:00",
+    "dataSource": "mock",
+    "futureTableName": "automation_import_logs",
+    "automationReady": false,
+    "stage": 17,
+    "todos": [
+      "Supabase client lazy initialization",
+      "row to domain mapper",
+      "domain to row mapper",
+      "repository implementation",
+      "JSON fallback 유지",
+      "parser/import regression test"
+    ],
+    "requiredSkills": ["Supabase", "data mapping", "Next.js Route Handler"],
+    "blockers": [
+      "Supabase local setup 미완료",
+      "migration 검증 미완료",
+      "RLS/Auth 정책 미정"
+    ],
+    "isCurrent": false
   }
 ]

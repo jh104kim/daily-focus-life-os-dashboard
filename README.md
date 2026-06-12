@@ -2,7 +2,7 @@
 
 mock data 기반 로컬 웹 대시보드 MVP입니다. 매일 작성하는 오늘 집중 계획, 목표 관리, AI/AX 적용 관점, 저녁 회고, 산출물 로그, 자동화 로드맵을 한 화면 흐름으로 관리하기 위해 만들었습니다.
 
-현재 2.3단계는 DB, Supabase, 외부 API 연결 없이 `data/*.json` 파일의 데이터만 사용합니다.
+현재 3.2단계는 DB, Supabase, 외부 API 연결 없이 `data/*.json` 파일의 데이터만 사용합니다. Supabase DDL, JSON migration plan, data adapter interface는 초안으로만 준비되어 있으며 실행 또는 연결되지 않았습니다.
 
 ## 실행 방법
 
@@ -193,7 +193,14 @@ Hint 처리 규칙:
 - `2.1 selected save`: 파일/항목/필드 단위 선택 저장
 - `2.2 bulk automation import console`: 여러 자동화 결과 일괄 붙여넣기
 - `2.3 parser fixture tests`: 핵심 parser fixture 테스트
+- `2.4 deferred weekly automation schemas`: 주간 뉴스/ETF/투자 자동화 스키마 후보 정의
+- `2.5 Home Weekly Automation Summary panel`: 주간 자동화 parser pending 상태 표시
 - `3.0 Supabase / DB preparation`: 구현 없이 Todo로만 관리
+- `3.0.5 Supabase DDL draft`: SQL 초안과 JSON to table 매핑 문서 작성
+- `3.1 JSON to Supabase migration plan`: legacy id 매핑, dry-run, rollback 전략 문서화
+- `3.2 Data adapter interface design`: JSON/Supabase 교체를 위한 repository interface 초안
+- `3.3 Supabase local setup`: 보류
+- `3.4 Supabase runtime adapter`: 보류
 
 ## Parser Fixture 테스트
 
@@ -381,6 +388,65 @@ data/data-source-status.json
 - DB 연결 코드 작성하지 않음
 - SQL migration 실행하지 않음
 - 실제 DDL 파일은 사용자가 명시적으로 요청할 때만 생성
+
+## 3.0.5 Supabase DDL Draft
+
+사용자가 명시적으로 요청한 범위 안에서 Supabase 전환용 DDL 초안만 작성했습니다. 아래 파일은 설계 초안이며 현재 환경에서 실행하지 않았습니다.
+
+- `docs/supabase-ddl-draft.md`
+- `supabase/schema-draft/001_life_os_core.sql`
+- `supabase/schema-draft/002_automation_logs.sql`
+- `supabase/schema-draft/003_weekly_logs.sql`
+
+초안 원칙:
+
+- 각 테이블은 `uuid primary key`, `created_at`, `updated_at` 기준으로 설계했습니다.
+- 기존 JSON의 string id는 `legacy_json_id`에 보관하는 마이그레이션 후보로 정리했습니다.
+- 배열/가변 필드는 우선 `jsonb`로 두고, 필요 시 이후 정규화합니다.
+- `related_goal_id`, `related_module_id`, `related_focus_id`는 uuid 후보로 설계했습니다.
+- Foreign key는 초안에 포함했지만 JSON id to uuid 매핑 검토가 필요합니다.
+- RLS/Auth, Supabase client, migration 실행은 여전히 Todo입니다.
+
+## 3.1 JSON to Supabase Migration Plan
+
+`docs/json-to-supabase-migration-plan.md`에 JSON 파일을 Supabase 테이블로 옮기는 절차를 정리했습니다. 이 문서는 실행 계획 초안이며 migration script를 구현하거나 실행하지 않습니다.
+
+포함 내용:
+
+- `legacy_json_id` 보존 전략
+- JSON string id to uuid 매핑 방식
+- 테이블별 migration 순서
+- foreign key 연결 순서
+- upsert 기준
+- dry-run 출력 기준
+- rollback 전략
+- migration 전 백업 전략
+- 검증 쿼리 후보
+
+## 3.2 Data Adapter Interface Design
+
+`docs/data-adapter-design.md`와 `lib/data-adapter.types.ts`에 JSON/Supabase 교체 가능한 repository interface 초안을 추가했습니다. 현재 runtime은 여전히 `lib/mock-data.ts`와 JSON persistence helper를 사용합니다.
+
+초안 repository:
+
+- `DailyFocusRepository`
+- `GoalRepository`
+- `LearningModuleRepository`
+- `AIApplicationRepository`
+- `ReflectionRepository`
+- `EvidenceLogRepository`
+- `AutomationImportLogRepository`
+
+공통 메서드:
+
+- `list`
+- `getById`
+- `getByDate`
+- `upsert`
+- `update`
+- `remove`
+- `queryByWeek`
+- `queryByMonth`
 
 ## 제약
 
