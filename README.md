@@ -107,6 +107,9 @@ Bulk Automation Import Console입니다. ChatGPT 자동화에서 생성된 여�
 - `reminder_task`
 - `daily_focus_update`
 - `daily_operation_log`
+- `weekly_news_summary`
+- `weekly_etf_report_check`
+- `weekly_investment_summary`
 - `unknown`
 
 주요 저장 대상:
@@ -120,6 +123,9 @@ Bulk Automation Import Console입니다. ChatGPT 자동화에서 생성된 여�
 - `data/ab-test-logs.json`
 - `data/ai-framework-checks.json`
 - `data/reminder-tasks.json`
+- `data/news-summary-logs.json`
+- `data/investment-report-logs.json`
+- `data/investment-summary-logs.json`
 
 저장 전 안전장치:
 
@@ -193,8 +199,8 @@ Hint 처리 규칙:
 - `2.1 selected save`: 파일/항목/필드 단위 선택 저장
 - `2.2 bulk automation import console`: 여러 자동화 결과 일괄 붙여넣기
 - `2.3 parser fixture tests`: 핵심 parser fixture 테스트
-- `2.4 deferred weekly automation schemas`: 주간 뉴스/ETF/투자 자동화 스키마 후보 정의
-- `2.5 Home Weekly Automation Summary panel`: 주간 자동화 parser pending 상태 표시
+- `2.4 weekly automation parsers`: 주간 뉴스/ETF/투자 자동화 parser 구현과 저장 연결
+- `2.5 Home Weekly Automation Summary panel`: 주간 자동화 주차별 데이터 상태 표시
 - `3.0 Supabase / DB preparation`: 구현 없이 Todo로만 관리
 - `3.0.5 Supabase DDL draft`: SQL 초안과 JSON to table 매핑 문서 작성
 - `3.1 JSON to Supabase migration plan`: legacy id 매핑, dry-run, rollback 전략 문서화
@@ -215,6 +221,9 @@ tests/fixtures/ai-framework-check.txt
 tests/fixtures/reminder-task.txt
 tests/fixtures/daily-focus-update.txt
 tests/fixtures/daily-operation-log.txt
+tests/fixtures/weekly-news-summary.txt
+tests/fixtures/weekly-etf-report-check.txt
+tests/fixtures/weekly-investment-summary.txt
 tests/fixtures/unknown.txt
 tests/fixtures/bulk-mixed-automation.txt
 ```
@@ -247,33 +256,55 @@ npm run test:parsers
 
 현재 DB/Supabase는 Todo 상태입니다. 이 테스트는 로컬 `data/*.json`과 `/api/bulk-automation-import`만 사용합니다.
 
-## 보류 중인 unknown 자동화
+참고: 이 파일의 블록 10~12(주간 뉴스/ETF/투자)는 자동화 prompt 정의 원문이라 제목 키워드로 주간 유형으로 감지되지만, 본문에 데이터 섹션이 없어 missing field 경고와 함께 빈 필드로 파싱됩니다. 실제 주간 자동화 출력을 붙여넣으면 정상적으로 채워집니다.
 
-`automation_inputs_full_for_bulk_import_test.md` Bulk Import 검증에서 아래 3개 자동화는 의도적으로 `unknown`으로 유지합니다. 현재 출력은 주간 뉴스/투자 알림성 원문이고, Daily Focus/Reflection/Evidence/Reminder 중 하나로 억지 매핑하면 저장 의미가 흐려집니다. 먼저 별도 저장 스키마를 정의하고 Home Dashboard에서 상태만 확인한 뒤 parser 구현 여부를 결정합니다.
+## 주간 자동화 3종 (2.4 구현 완료)
 
-| 현재 원문 제목 | 후보 automationType | 후보 저장 JSON | 보조 저장 |
+주간 뉴스/ETF/투자 자동화 3종은 parser가 구현되어 Bulk Import와 단일 Import에서 저장됩니다.
+
+| 원문 제목 | automationType | 저장 JSON | 보조 저장 |
 | --- | --- | --- | --- |
 | `Send weekly news summary` | `weekly_news_summary` | `data/news-summary-logs.json` | `data/evidence-logs.json` |
 | `Check weekly ETF report` | `weekly_etf_report_check` | `data/investment-report-logs.json` | `data/evidence-logs.json` |
 | `Send weekly investment summary` | `weekly_investment_summary` | `data/investment-summary-logs.json` | `data/evidence-logs.json` |
 
-후보 필드:
+저장 필드:
 
 - `weekly_news_summary`: `id`, `targetWeek`, `generatedAt`, `koreaNews`, `usNews`, `globalNews`, `aiNews`, `summary`, `sourceAutomationType`, `dataSource`, `importBatchId`
 - `weekly_etf_report_check`: `id`, `targetWeek`, `reportType`, `reportUrl`, `keyChanges`, `summary`, `actionItems`, `sourceAutomationType`, `dataSource`, `importBatchId`
 - `weekly_investment_summary`: `id`, `targetWeek`, `accounts`, `requiredCashByAccount`, `grandTotalKrw`, `fxRate`, `assetNews`, `actionItems`, `summary`, `sourceAutomationType`, `dataSource`, `importBatchId`
 
-현재 상태:
+동작 방식:
 
-- 후보 타입은 `lib/types.ts`에 정의되어 있습니다.
-- 후보 JSON 파일은 빈 배열로 준비되어 있습니다.
-- Home Dashboard의 Weekly Automation Summary 패널에서 선택 날짜의 `weekKey` 기준으로 3개 후보 자동화 상태를 표시합니다.
-- 현재 빈 JSON 상태에서는 `parser_pending`과 `데이터 없음 / parser pending`으로 표시합니다.
-- `AutomationType` union과 parser/router에는 아직 연결하지 않았습니다.
-- Bulk Import에서는 계속 `unknown`으로 유지하며, 사용 빈도가 확인되면 별도 parser 구현을 검토합니다.
+- `targetWeek`는 대상 날짜가 포함된 주의 월요일(YYYY-MM-DD)입니다. 같은 주 데이터를 다시 Import하면 신규 생성이 아니라 업데이트됩니다.
+- Home Dashboard의 Weekly Automation Summary 패널은 선택 날짜의 `weekKey` 기준으로 3개 자동화의 데이터 유무를 `ready` / `no_data`로 표시합니다.
 - 별도 `/weekly` 페이지는 뉴스/ETF/투자 정보량이 커질 때 추가할 Roadmap Todo입니다.
-- `tests/fixtures/automation-inputs-full.md`는 계속 parsed `9`, unknown `3`을 기대합니다.
+- `tests/fixtures/automation-inputs-full.md`는 parsed `12`, unknown `0`을 기대합니다.
 - DB/Supabase 전환은 Todo 상태이며 실제 연결 코드는 없습니다.
+
+권장 입력 형식(섹션 헤더 기준으로 파싱하며, 다르면 missing field 경고가 표시됩니다):
+
+```text
+# Send weekly investment summary - 2026-06-15
+
+## 계좌별 필요 금액
+- ISA: 500,000원
+
+## 환율
+- USD/KRW: 1,350.5
+
+## 총 필요 금액
+- 1,200,000원
+
+## 자산별 뉴스
+- TIGER S&P500: 지수 사상 최고치 경신
+
+## Action Items
+- 월요일 장 시작 전 이체 완료
+
+## 요약
+- 이번 주 정기 매수에 총 120만원 필요.
+```
 
 ## 실제 내용 입력 방법
 
