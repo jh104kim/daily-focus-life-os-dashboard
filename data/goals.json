@@ -12,7 +12,11 @@
     "dataSource": "mock",
     "futureTableName": "goals",
     "automationReady": true,
-    "level": "north_star"
+    "level": "north_star",
+    "goalLevel": "north_star",
+    "weekKey": "2026-12-27",
+    "monthKey": "2026-12",
+    "parentGoalId": ""
   },
   {
     "id": "goal-monthly-001",
@@ -29,7 +33,10 @@
     "futureTableName": "goals",
     "automationReady": true,
     "level": "monthly",
-    "parentGoalId": "goal-north-001"
+    "parentGoalId": "goal-north-001",
+    "goalLevel": "monthly",
+    "weekKey": "2026-06-28",
+    "monthKey": "2026-06"
   },
   {
     "id": "goal-weekly-001",
@@ -47,7 +54,10 @@
     "automationReady": true,
     "level": "weekly",
     "parentGoalId": "goal-monthly-001",
-    "relatedDailyFocusId": "focus-002"
+    "relatedDailyFocusId": "focus-002",
+    "goalLevel": "weekly",
+    "weekKey": "2026-06-07",
+    "monthKey": "2026-06"
   },
   {
     "id": "goal-daily-001",
@@ -65,7 +75,10 @@
     "automationReady": true,
     "level": "daily",
     "parentGoalId": "goal-weekly-001",
-    "relatedDailyFocusId": "focus-001"
+    "relatedDailyFocusId": "focus-001",
+    "goalLevel": "daily",
+    "weekKey": "2026-06-07",
+    "monthKey": "2026-06"
   },
   {
     "id": "goal-daily-002",
@@ -83,6 +96,9 @@
     "automationReady": true,
     "level": "daily",
     "parentGoalId": "goal-monthly-001",
-    "relatedDailyFocusId": "focus-003"
+    "relatedDailyFocusId": "focus-003",
+    "goalLevel": "daily",
+    "weekKey": "2026-06-07",
+    "monthKey": "2026-06"
   }
 ]

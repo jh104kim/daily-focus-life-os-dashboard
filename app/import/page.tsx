@@ -1,17 +1,17 @@
 import { SectionHeader } from "@/components/dashboard/section-header";
 import { SourceFooter } from "@/components/dashboard/source-footer";
-import { AutomationImportForm } from "@/components/import/automation-import-form";
+import { BulkAutomationImportConsole } from "@/components/input/bulk-automation-import-console";
 
 export default function ImportPage() {
   return (
     <div>
       <SectionHeader
-        title="Import"
-        description="ChatGPT 자동화 결과를 그대로 붙여넣으세요. 미리보기 후 저장하면 data/*.json 파일에 반영됩니다."
-        futureTableName="daily_focus_plans / learning_modules / ai_applications / evidence_logs"
+        title="Bulk Automation Import Console"
+        description="ChatGPT 자동화 결과, Daily Focus 업데이트, 운영 기록을 한 번에 붙여넣고 block별 Diff를 확인한 뒤 선택 저장합니다."
+        futureTableName="daily_focus_plans / reflections / evidence_logs / automation_logs"
       />
-      <AutomationImportForm />
-      <SourceFooter tableName="daily_focus_plans, learning_modules, ai_applications, evidence_logs" />
+      <BulkAutomationImportConsole />
+      <SourceFooter tableName="daily_focus_plans, learning_modules, ai_applications, reflections, evidence_logs, brief_logs, ab_test_logs, ai_framework_checks, reminder_tasks" />
     </div>
   );
 }

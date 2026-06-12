@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local import backups
+data/backups/
+
+# local parser test build output
+.parser-test/

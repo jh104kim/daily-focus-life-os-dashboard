@@ -9,6 +9,7 @@ const sourceLabels: Record<DataSource, string> = {
   future_supabase: "future_supabase",
   future_obsidian: "future_obsidian",
   future_json: "future_json",
+  chatgpt_automation: "chatgpt_automation",
 };
 
 const sourceStyles: Record<DataSource, string> = {
@@ -16,6 +17,7 @@ const sourceStyles: Record<DataSource, string> = {
   future_supabase: "border-emerald-200 bg-emerald-50 text-emerald-700",
   future_obsidian: "border-violet-200 bg-violet-50 text-violet-700",
   future_json: "border-amber-200 bg-amber-50 text-amber-700",
+  chatgpt_automation: "border-cyan-200 bg-cyan-50 text-cyan-700",
 };
 
 export function DataSourceTag({ source }: DataSourceTagProps) {

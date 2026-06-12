@@ -1,5 +1,30 @@
 [
   {
+    "id": "evidence-import-2026-06-16",
+    "title": "자동화 입력 로그 - 2026-06-16",
+    "description": "AI Education Focus Dashboard - 2026-06-16",
+    "status": "done",
+    "progress": 100,
+    "category": "자동화 입력",
+    "targetDate": "2026-06-16",
+    "createdAt": "2026-06-12T04:57:25.022Z",
+    "updatedAt": "2026-06-12T04:57:25.022Z",
+    "relatedGoalId": "goal-daily-001",
+    "relatedModuleId": "module-import-report-automation-validation",
+    "dataSource": "mock",
+    "futureTableName": "evidence_logs",
+    "automationReady": true,
+    "outputType": "문서",
+    "artifactLink": "/import",
+    "note": "성능측정 리포트 자동화 MVP 검증 기준 만들기 자동화 결과를 붙여넣어 JSON에 반영함",
+    "obsidianCandidatePath": "LifeOS/Imports/2026-06-16-ai-education-focus.md",
+    "evidenceDate": "2026-06-16",
+    "relatedFocusId": "goal-daily-001",
+    "reviewStatus": "pending",
+    "evidenceType": "문서",
+    "sourceUrl": "/import"
+  },
+  {
     "id": "evidence-2026-06-12-ai-education-fte",
     "title": "AI 교육 집중 계획 입력 - FTE 절감 적용 포인트",
     "description": "교육 내용에서 에이전트 AI를 FTE 절감형 업무 자동화로 연결할 적용 포인트를 찾는 일일 계획.",
@@ -17,7 +42,12 @@
     "outputType": "문서",
     "artifactLink": "/focus#focus-2026-06-12-ai-education-fte",
     "note": "핵심 목표, 서브 목표, 회고 섹션, 기준 문장을 날짜별 Daily Focus에 반영",
-    "obsidianCandidatePath": "LifeOS/DailyFocus/2026-06-12-ai-education-fte.md"
+    "obsidianCandidatePath": "LifeOS/DailyFocus/2026-06-12-ai-education-fte.md",
+    "evidenceDate": "2026-06-12",
+    "relatedFocusId": "goal-daily-001",
+    "reviewStatus": "pending",
+    "evidenceType": "문서",
+    "sourceUrl": "/focus#focus-2026-06-12-ai-education-fte"
   },
   {
     "id": "evidence-2026-06-13-performance-workflow",
@@ -37,7 +67,12 @@
     "outputType": "문서",
     "artifactLink": "/focus#focus-2026-06-13-performance-workflow-draft",
     "note": "자동화 워크플로우 구조와 5단계 구현 마일스톤을 Daily Focus에 반영",
-    "obsidianCandidatePath": "LifeOS/DailyFocus/2026-06-13-performance-workflow.md"
+    "obsidianCandidatePath": "LifeOS/DailyFocus/2026-06-13-performance-workflow.md",
+    "evidenceDate": "2026-06-13",
+    "relatedFocusId": "goal-weekly-001",
+    "reviewStatus": "pending",
+    "evidenceType": "문서",
+    "sourceUrl": "/focus#focus-2026-06-13-performance-workflow-draft"
   },
   {
     "id": "evidence-2026-06-14-performance-milestones",
@@ -57,6 +92,11 @@
     "outputType": "문서",
     "artifactLink": "/focus#focus-2026-06-14-performance-workflow-detail",
     "note": "성능측정 데이터 생성 위치, 입력값/결과값, 반복 판단 구간을 중심으로 계획 반영",
-    "obsidianCandidatePath": "LifeOS/DailyFocus/2026-06-14-performance-milestones.md"
+    "obsidianCandidatePath": "LifeOS/DailyFocus/2026-06-14-performance-milestones.md",
+    "evidenceDate": "2026-06-14",
+    "relatedFocusId": "goal-weekly-001",
+    "reviewStatus": "pending",
+    "evidenceType": "문서",
+    "sourceUrl": "/focus#focus-2026-06-14-performance-workflow-detail"
   }
 ]

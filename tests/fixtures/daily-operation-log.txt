@@ -1,0 +1,30 @@
+# Daily Operation Log - 2026-06-15
+
+오늘 완료한 것:
+- 구매 사양서 리스크 라벨링 2건
+- 자동화 Import 미리보기 검증
+
+아쉬웠던 점/막힌 점:
+- 선택 저장 필드 검증이 부족했다.
+
+내일 가장 먼저 할 일:
+- fixture 테스트를 먼저 실행한다.
+
+내일 핵심 목표 초안:
+- Bulk Import 안정화 검증 완료
+
+오늘 배운 것:
+- unknown block은 저장하지 않아야 한다.
+
+내 업무에 적용할 지점:
+- 자동화 결과를 하루 단위로 모아 붙여넣는다.
+
+산출물 로그:
+- 코드: Bulk Import parser fixture 추가
+- 문서: README Roadmap Todo 정리
+
+[Dashboard Import Hint]
+automationType: daily_operation_log
+targetDate: 2026-06-15
+primaryJson: reflections.json
+relatedJson: evidence-logs.json

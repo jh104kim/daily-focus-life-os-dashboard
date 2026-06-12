@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".parser-test",
+    "rootDir": ".",
+    "tsBuildInfoFile": ".parser-test/tsconfig.parser-test.tsbuildinfo"
+  },
+  "include": ["lib/**/*.ts", "scripts/**/*.ts"],
+  "exclude": ["node_modules", ".next", ".parser-test"]
+}

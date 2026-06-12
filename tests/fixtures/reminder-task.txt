@@ -1,0 +1,19 @@
+# 산장 예약 리마인더 - 2026-06-15
+
+예약 제목:
+- 지리산 산장 예약
+
+예약 대상:
+- 7월 주말 숙박
+
+예약 사이트:
+- https://reservation.example.com
+
+예약 오픈 시간:
+- 09:00
+
+[Dashboard Import Hint]
+automationType: reminder_task
+targetDate: 2026-06-15
+primaryJson: reminder-tasks.json
+relatedJson: evidence-logs.json

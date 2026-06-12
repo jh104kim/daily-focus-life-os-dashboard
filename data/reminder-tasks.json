@@ -1,0 +1,38 @@
+[
+  {
+    "id": "reminder-2026-06-20-산장-예약-리마인더-2026-06-20",
+    "title": "산장 예약 리마인더 - 2026-06-20",
+    "description": "테스트 산장",
+    "status": "planned",
+    "progress": 30,
+    "category": "Reservation",
+    "targetDate": "2026-07-02",
+    "createdAt": "2026-06-12T06:13:41.321Z",
+    "updatedAt": "2026-06-12T06:13:41.321Z",
+    "relatedGoalId": "goal-daily-001",
+    "dataSource": "mock",
+    "futureTableName": "reminder_tasks",
+    "automationReady": true,
+    "reminderDate": "2026-06-20",
+    "sourceUrl": "https://reservation.example.com",
+    "triggerTime": "10:30"
+  },
+  {
+    "id": "reminder-2026-06-19-산장-예약-리마인더-2026-06-19",
+    "title": "산장 예약 리마인더 - 2026-06-19",
+    "description": "테스트 산장",
+    "status": "planned",
+    "progress": 30,
+    "category": "Reservation",
+    "targetDate": "2026-07-01",
+    "createdAt": "2026-06-12T05:50:32.559Z",
+    "updatedAt": "2026-06-12T05:50:32.559Z",
+    "relatedGoalId": "goal-daily-001",
+    "dataSource": "mock",
+    "futureTableName": "reminder_tasks",
+    "automationReady": true,
+    "reminderDate": "2026-06-19",
+    "sourceUrl": "https://reservation.example.com",
+    "triggerTime": "10:00"
+  }
+]

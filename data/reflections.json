@@ -1,14 +1,14 @@
 [
   {
     "id": "reflection-2026-06-12-ai-education-fte",
-    "title": "교육 내용에서 FTE 절감형 자동화 연결 지점 찾기",
-    "description": "오늘은 모든 내용을 이해하려 하기보다 교육 내용, 내 업무 자동화, FTE 절감이 연결되는 지점 하나를 찾는 데 집중한다.",
-    "status": "planned",
-    "progress": 0,
+    "title": "오늘 배운 핵심 개념:",
+    "description": "아직 헷갈리는 부분:",
+    "status": "done",
+    "progress": 100,
     "category": "AI Education Reflection",
     "targetDate": "2026-06-12",
     "createdAt": "2026-06-12T09:00:00+09:00",
-    "updatedAt": "2026-06-12T14:00:00+09:00",
+    "updatedAt": "2026-06-12T05:32:35.157Z",
     "relatedGoalId": "goal-daily-001",
     "relatedModuleId": "module-agentic-fte-automation",
     "dataSource": "mock",
@@ -33,10 +33,14 @@
       "캘로리미터 반복 입력/정리 업무에서 FTE 절감 가능 단계 1개를 찾는다."
     ],
     "autoFillCandidates": [
-      "오늘 배운 핵심 개념",
-      "FTE 절감과 연결될 수 있는 업무",
-      "아직 헷갈리는 부분",
-      "내일 이어서 볼 주제"
+      "tomorrowFirstAction",
+      "tomorrowGoalDraft",
+      "appliedToWork"
+    ],
+    "relatedFocusId": "focus-2026-06-12-ai-education-fte",
+    "reflectionDate": "2026-06-12",
+    "appliedToWork": [
+      "캘로리미터 반복 입력/정리 업무에서 FTE 절감 가능 단계 1개를 찾는다."
     ]
   },
   {
@@ -79,6 +83,11 @@
       "성능측정/분석에서 자동화 가능한 단계",
       "구현 프로세스에서 가장 중요한 단계",
       "내일 이어서 할 일"
+    ],
+    "relatedFocusId": "goal-weekly-001",
+    "reflectionDate": "2026-06-13",
+    "appliedToWork": [
+      "수작업 프로세스 정리 → 자동화 가능 구간 표시 → MVP 설계 → 샘플 데이터 검증 → FTE 절감 효과 산정"
     ]
   },
   {
@@ -118,6 +127,11 @@
       "자동화 가능성이 가장 큰 단계",
       "구현 프로세스에서 막힌 부분",
       "내일 이어서 볼 마일스톤"
+    ],
+    "relatedFocusId": "goal-weekly-001",
+    "reflectionDate": "2026-06-14",
+    "appliedToWork": [
+      "수작업 프로세스 문서화, 자동화 가능 구간 선정, MVP 워크플로우 설계, 샘플 데이터 검증, 리포트 자동화 및 FTE 절감 효과 산정"
     ]
   }
 ]

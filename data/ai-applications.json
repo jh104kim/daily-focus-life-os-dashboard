@@ -1,5 +1,34 @@
 [
   {
+    "id": "ai-import-2026-06-16",
+    "title": "AI/AX 적용: 성능측정 리포트 자동화 MVP 검증 기준 만들기",
+    "description": "측정값을 표준 템플릿에 넣고 결과 요약과 메일 초안을 생성한다.",
+    "status": "in_progress",
+    "progress": 45,
+    "category": "Imported AI/AX",
+    "targetDate": "2026-06-16",
+    "createdAt": "2026-06-12T04:57:25.022Z",
+    "updatedAt": "2026-06-12T04:57:25.022Z",
+    "relatedGoalId": "goal-daily-001",
+    "relatedModuleId": "module-import-report-automation-validation",
+    "dataSource": "mock",
+    "futureTableName": "ai_applications",
+    "automationReady": true,
+    "businessProblem": "성능측정 후 결과 정리와 보고서 초안 작성에 반복 시간이 든다.",
+    "aiSolvableForm": "측정값을 표준 템플릿에 넣고 결과 요약과 메일 초안을 생성한다.",
+    "requiredSkills": [
+      "데이터 매핑",
+      "리포트 템플릿",
+      "자동 요약"
+    ],
+    "expectedAutomationEffect": "보고서 초안 작성 시간을 줄인다.",
+    "targetWork": "성능측정 리포트 자동화 MVP 검증 기준 만들기",
+    "relatedLearningModuleIds": [
+      "module-import-report-automation-validation"
+    ],
+    "automationScore": 45
+  },
+  {
     "id": "ai-2026-06-12-agent-fte",
     "title": "AI/AX 적용: 에이전트 AI 기반 FTE 절감 적용 포인트 발굴",
     "description": "AI 교육 내용을 단순 학습으로 끝내지 않고 캘로리미터 반복 입력·정리 업무의 자동화 후보로 연결한다.",

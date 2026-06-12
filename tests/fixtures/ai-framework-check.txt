@@ -1,0 +1,23 @@
+# AI Framework Check - 2026-06-15
+
+오늘의 주제:
+- RAG 평가 기준
+
+30초 체크 질문:
+- 검색 결과가 답변 근거와 일치하는지 어떻게 확인할 수 있는가?
+
+선택지:
+- 안다
+- 모른다
+- 애매하다
+
+핵심 포인트 3개:
+- 검색 근거와 답변 문장 연결
+- 실패 케이스 수집
+- 정량/정성 평가 병행
+
+[Dashboard Import Hint]
+automationType: ai_framework_check
+targetDate: 2026-06-15
+primaryJson: ai-framework-checks.json
+relatedJson: learning-modules.json,evidence-logs.json

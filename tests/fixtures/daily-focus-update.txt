@@ -1,0 +1,15 @@
+# Daily Focus Update - 2026-06-15
+
+progress: 82%
+status: in_progress
+firstActionDone: true
+completionChecked: false
+reviewNotes: 사양서 2건 라벨링 완료, 예외 조건 추가 필요
+actualOutput: 리스크 유형 초안
+blockedReason: 승인 조건 예외 케이스 부족
+nextAction: 사양서 1건을 추가 검증한다.
+
+[Dashboard Import Hint]
+automationType: daily_focus_update
+targetDate: 2026-06-15
+primaryJson: daily-focus-plans.json

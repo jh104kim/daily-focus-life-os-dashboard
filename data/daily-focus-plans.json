@@ -1,5 +1,43 @@
 [
   {
+    "id": "focus-import-2026-06-16",
+    "title": "성능측정 리포트 자동화 MVP 검증 기준 만들기",
+    "description": "실제 측정 데이터 컬럼 확인",
+    "status": "in_progress",
+    "progress": 45,
+    "category": "Imported Focus",
+    "targetDate": "2026-06-16",
+    "createdAt": "2026-06-12T04:57:25.022Z",
+    "updatedAt": "2026-06-12T05:15:55.125Z",
+    "relatedGoalId": "goal-daily-001",
+    "relatedModuleId": "module-import-report-automation-validation",
+    "dataSource": "mock",
+    "futureTableName": "daily_focus_plans",
+    "automationReady": true,
+    "subGoals": [
+      "Report Automation Validation",
+      "데이터 매핑, 리포트 템플릿, 자동 요약"
+    ],
+    "firstAction": "기존 리포트에서 반복되는 표와 문장을 표시한다.",
+    "completionCriteria": "샘플 데이터 1건으로 리포트 자동 생성 흐름 설명 가능",
+    "expectedOutput": "리포트 자동화 MVP 검증 체크리스트",
+    "mustNotMiss": "실제 측정 데이터 컬럼 확인",
+    "reviewNotes": "",
+    "subGoalStatuses": [
+      false,
+      false
+    ],
+    "firstActionDone": false,
+    "completionChecked": false,
+    "actualOutput": "",
+    "mustNotMissChecked": false,
+    "blockedReason": "",
+    "nextAction": "",
+    "selectedDate": "2026-06-16",
+    "weekKey": "2026-06-14",
+    "monthKey": "2026-06"
+  },
+  {
     "id": "focus-2026-06-12-ai-education-fte",
     "title": "에이전트 AI를 FTE 절감형 업무 자동화로 연결할 적용 포인트 1개 찾기",
     "description": "AI 교육에 집중하면서 교육 내용이 내 업무 자동화와 FTE 절감으로 연결될 수 있는 지점 하나를 찾는다.",
@@ -21,7 +59,21 @@
     "firstAction": "교육 내용에서 입력, 판단, 실행, 결과 정리로 나뉘는 업무 흐름을 하나 골라 적는다.",
     "completionCriteria": "교육 내용, 내 업무 자동화, FTE 절감이 연결되는 적용 포인트 1개가 문장으로 정리됨",
     "expectedOutput": "에이전트 AI 기반 FTE 절감 적용 포인트 메모",
-    "mustNotMiss": "오늘은 모든 걸 이해하려 하지 말고 교육 내용에서 내 업무 자동화와 FTE 절감으로 연결되는 지점 하나만 찾는다."
+    "mustNotMiss": "오늘은 모든 걸 이해하려 하지 말고 교육 내용에서 내 업무 자동화와 FTE 절감으로 연결되는 지점 하나만 찾는다.",
+    "reviewNotes": "",
+    "subGoalStatuses": [
+      false,
+      false
+    ],
+    "firstActionDone": false,
+    "completionChecked": false,
+    "actualOutput": "",
+    "mustNotMissChecked": false,
+    "blockedReason": "",
+    "nextAction": "",
+    "selectedDate": "2026-06-12",
+    "weekKey": "2026-06-07",
+    "monthKey": "2026-06"
   },
   {
     "id": "focus-2026-06-13-performance-workflow-draft",
@@ -45,7 +97,21 @@
     "firstAction": "현재 성능측정에서 분석과 리포트까지 사람이 반복하는 흐름을 순서대로 적는다.",
     "completionCriteria": "성능측정 → 분석 → 리포트 흐름이 5단계 마일스톤 초안으로 정리됨",
     "expectedOutput": "성능측정·분석 자동화 워크플로우 및 구현 마일스톤 초안",
-    "mustNotMiss": "오늘은 기술 구현보다 성능측정, 분석, 리포트 흐름을 자동화 워크플로우로 쪼개는 데 집중한다."
+    "mustNotMiss": "오늘은 기술 구현보다 성능측정, 분석, 리포트 흐름을 자동화 워크플로우로 쪼개는 데 집중한다.",
+    "reviewNotes": "",
+    "subGoalStatuses": [
+      false,
+      false
+    ],
+    "firstActionDone": false,
+    "completionChecked": false,
+    "actualOutput": "",
+    "mustNotMissChecked": false,
+    "blockedReason": "",
+    "nextAction": "",
+    "selectedDate": "2026-06-13",
+    "weekKey": "2026-06-07",
+    "monthKey": "2026-06"
   },
   {
     "id": "focus-2026-06-14-performance-workflow-detail",
@@ -69,6 +135,20 @@
     "firstAction": "성능측정 데이터가 어디서 생성되고 어떤 형식으로 분석에 들어가는지 먼저 적는다.",
     "completionCriteria": "자동화 가능성이 가장 큰 단계와 다음 마일스톤이 명확히 정리됨",
     "expectedOutput": "성능측정·분석 자동화 구현 프로세스 상세 초안",
-    "mustNotMiss": "오늘은 완성보다 성능측정 → 분석 → 리포트 흐름을 자동화 가능한 단계로 나누는 데 집중한다."
+    "mustNotMiss": "오늘은 완성보다 성능측정 → 분석 → 리포트 흐름을 자동화 가능한 단계로 나누는 데 집중한다.",
+    "reviewNotes": "",
+    "subGoalStatuses": [
+      false,
+      false
+    ],
+    "firstActionDone": false,
+    "completionChecked": false,
+    "actualOutput": "",
+    "mustNotMissChecked": false,
+    "blockedReason": "",
+    "nextAction": "",
+    "selectedDate": "2026-06-14",
+    "weekKey": "2026-06-07",
+    "monthKey": "2026-06"
   }
 ]

@@ -1,0 +1,25 @@
+# Daily Focus A/B - 2026-06-15
+
+오늘의 문구:
+- 오늘은 승인 조건 누락을 하나라도 줄이는 날
+
+실험 Variant:
+- 리스크 감소 강조형
+
+내 판단 기준:
+- 첫 행동을 30분 안에 시작했는지
+
+완료/미완료 판단:
+- 완료
+
+왜 이 문구가 효과 있을지:
+- 산출물보다 리스크 감소에 초점을 맞춘다.
+
+유사 테스트 아이디어:
+- 질문 누락 제로 문구 실험
+
+[Dashboard Import Hint]
+automationType: daily_focus_ab_test
+targetDate: 2026-06-15
+primaryJson: ab-test-logs.json
+relatedJson: reflections.json,evidence-logs.json

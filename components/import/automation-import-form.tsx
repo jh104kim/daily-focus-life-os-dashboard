@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { parseAutomationText } from "@/lib/parse-automation-text";
-import type { ImportDailyFocusResponse, ParsedAutomationImport } from "@/lib/types";
+import type {
+  AutomationImportPreview,
+  JsonFileDiff,
+  SelectedImportChange,
+  SelectedImportSummary,
+} from "@/lib/types";
 import { ImportPreview } from "./import-preview";
 
 const placeholder = `# AI Education Focus Dashboard - 2026-06-12
@@ -26,20 +30,56 @@ const placeholder = `# AI Education Focus Dashboard - 2026-06-12
 - 예상 자동화 효과: 검토 초안 작성 시간을 50% 줄인다.
 
 ## 5. 오늘 첫 행동
-- 최근 사양서 3건에서 반복 검토 항목을 추출한다.`;
+- 최근 사양서 3건에서 반복 검토 항목을 추출한다.
 
-export function AutomationImportForm() {
+[Dashboard Import Hint]
+automationType: ai_education_focus
+targetDate: 2026-06-12
+primaryJson: daily-focus-plans.json
+relatedJson: learning-modules.json, ai-applications.json, evidence-logs.json`;
+
+interface AutomationImportFormProps {
+  onSaved?: (parsed: AutomationImportPreview) => void;
+}
+
+export function AutomationImportForm({ onSaved }: AutomationImportFormProps) {
   const [pastedText, setPastedText] = useState("");
-  const [parsed, setParsed] = useState<ParsedAutomationImport | null>(null);
+  const [parsed, setParsed] = useState<AutomationImportPreview | null>(null);
   const [message, setMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [updatedFiles, setUpdatedFiles] = useState<string[]>([]);
+  const [diff, setDiff] = useState<JsonFileDiff[]>([]);
+  const [appliedDiff, setAppliedDiff] = useState<JsonFileDiff[]>([]);
+  const [backupPath, setBackupPath] = useState("");
+  const [importLogId, setImportLogId] = useState("");
+  const [selectedChanges, setSelectedChanges] = useState<SelectedImportChange[]>([]);
+  const [selectionDirty, setSelectionDirty] = useState(false);
+  const [selectedSummary, setSelectedSummary] = useState<SelectedImportSummary | null>(null);
 
-  function handlePreview() {
+  async function handlePreview() {
     try {
       setMessage("");
       setUpdatedFiles([]);
-      setParsed(parseAutomationText(pastedText));
+      setAppliedDiff([]);
+      setBackupPath("");
+      setImportLogId("");
+      setSelectionDirty(false);
+      setSelectedSummary(null);
+      const response = await fetch("/api/automation-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pastedText, dryRun: true }),
+      });
+      const result = (await response.json()) as UnifiedImportResponse;
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "미리보기 실패");
+      }
+
+      setParsed(result.parsed ?? null);
+      setDiff(result.diff ?? []);
+      setSelectedChanges(buildAllSelectedChanges(result.diff ?? []));
+      setMessage("미리보기 완료");
     } catch (error) {
       setParsed(null);
       setMessage(error instanceof Error ? error.message : "미리보기 파싱 실패");
@@ -50,22 +90,37 @@ export function AutomationImportForm() {
     setIsSaving(true);
     setMessage("");
     setUpdatedFiles([]);
+    setAppliedDiff([]);
+    setBackupPath("");
+    setImportLogId("");
+    setSelectedSummary(null);
 
     try {
-      const response = await fetch("/api/import-daily-focus", {
+      const response = await fetch("/api/automation-import", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pastedText }),
+        body: JSON.stringify({
+          pastedText,
+          selectedChanges: selectionDirty ? selectedChanges : undefined,
+        }),
       });
-      const result = (await response.json()) as ImportDailyFocusResponse;
+      const result = (await response.json()) as UnifiedImportResponse;
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || "저장 실패");
       }
 
       setParsed(result.parsed ?? null);
+      setDiff(result.diff ?? []);
+      setAppliedDiff(result.appliedDiff ?? []);
       setUpdatedFiles(result.updatedFiles ?? []);
+      setBackupPath(result.backupPath ?? "");
+      setImportLogId(result.importLogId ?? "");
+      setSelectedSummary(result.selectedSummary ?? null);
       setMessage("저장 완료");
+      if (result.parsed) {
+        onSaved?.(result.parsed);
+      }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "저장 실패");
     } finally {
@@ -112,7 +167,9 @@ export function AutomationImportForm() {
           {message ? (
             <span
               className={`text-sm font-medium ${
-                message === "저장 완료" ? "text-emerald-700" : "text-rose-700"
+                message === "저장 완료" || message === "미리보기 완료"
+                  ? "text-emerald-700"
+                  : "text-rose-700"
               }`}
             >
               {message}
@@ -131,8 +188,66 @@ export function AutomationImportForm() {
             </div>
           </div>
         ) : null}
+        {backupPath || importLogId ? (
+          <div className="mt-4 rounded-md border border-cyan-200 bg-cyan-50 p-3">
+            <div className="text-xs font-medium text-cyan-700">저장 후 결과</div>
+            <div className="mt-2 grid gap-1 font-mono text-xs text-cyan-800">
+              {backupPath ? <span>backup: {backupPath}</span> : null}
+              {importLogId ? <span>importLogId: {importLogId}</span> : null}
+              {selectedSummary ? (
+                <span>
+                  selectedSave: {selectedSummary.selectedSave ? "true" : "false"} · records:{" "}
+                  {selectedSummary.savedRecordCount} · fields: {selectedSummary.savedFieldCount} ·
+                  excluded: {selectedSummary.excludedRecordCount}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
       </section>
-      <ImportPreview parsed={parsed} />
+      <ImportPreview
+        parsed={parsed}
+        diff={diff}
+        appliedDiff={appliedDiff}
+        selectedChanges={selectedChanges}
+        onSelectionChange={(next) => {
+          setSelectedChanges(next);
+          setSelectionDirty(true);
+        }}
+      />
     </div>
   );
+}
+
+interface UnifiedImportResponse {
+  success: boolean;
+  parsed?: AutomationImportPreview;
+  diff?: JsonFileDiff[];
+  appliedDiff?: JsonFileDiff[];
+  updatedFiles?: string[];
+  backupPath?: string;
+  importLogId?: string;
+  selectedSummary?: SelectedImportSummary;
+  message: string;
+  warnings?: string[];
+}
+
+function buildAllSelectedChanges(diff: JsonFileDiff[]): SelectedImportChange[] {
+  return diff.flatMap((file) => [
+    ...file.added.map((record) => ({
+      fileName: file.fileName,
+      action: "add" as const,
+      id: record.id,
+      title: record.title,
+      targetDate: record.targetDate,
+    })),
+    ...file.updated.map((record) => ({
+      fileName: file.fileName,
+      action: "update" as const,
+      id: record.id,
+      title: record.title,
+      targetDate: record.targetDate,
+      selectedFields: record.changedFields.map((field) => field.field),
+    })),
+  ]);
 }

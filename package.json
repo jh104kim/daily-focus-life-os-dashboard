@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:parsers": "tsc -p tsconfig.parser-test.json && node .parser-test/scripts/test-parsers.js"
   },
   "dependencies": {
     "next": "16.2.9",
