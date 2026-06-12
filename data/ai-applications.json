@@ -1,0 +1,91 @@
+[
+  {
+    "id": "ai-2026-06-12-agent-fte",
+    "title": "AI/AX 적용: 에이전트 AI 기반 FTE 절감 적용 포인트 발굴",
+    "description": "AI 교육 내용을 단순 학습으로 끝내지 않고 캘로리미터 반복 입력·정리 업무의 자동화 후보로 연결한다.",
+    "status": "in_progress",
+    "progress": 35,
+    "category": "AI Education",
+    "targetDate": "2026-06-12",
+    "createdAt": "2026-06-12T09:00:00+09:00",
+    "updatedAt": "2026-06-12T14:00:00+09:00",
+    "relatedGoalId": "goal-daily-001",
+    "relatedModuleId": "module-agentic-fte-automation",
+    "dataSource": "mock",
+    "futureTableName": "ai_applications",
+    "automationReady": true,
+    "businessProblem": "AI 교육 내용이 실제 업무 자동화와 FTE 절감으로 연결되지 않으면 학습 효과가 산출물로 남지 않는다.",
+    "aiSolvableForm": "교육 내용을 입력, 판단, 실행, 결과 정리 흐름으로 분해하고 캘로리미터 반복 입력·정리 업무에 적용 가능한 단계를 찾는다.",
+    "requiredSkills": [
+      "Agentic Workflow 이해",
+      "업무 프로세스 분해",
+      "FTE 절감 포인트 식별"
+    ],
+    "expectedAutomationEffect": "반복 입력/정리 업무 중 자동화 가능한 단계 1개를 찾아 FTE 절감 검토 대상으로 만든다.",
+    "targetWork": "캘로리미터 성능측정 관련 반복 입력·정리 업무",
+    "relatedLearningModuleIds": [
+      "module-agentic-fte-automation"
+    ],
+    "automationScore": 55
+  },
+  {
+    "id": "ai-2026-06-13-performance-workflow",
+    "title": "AI/AX 적용: 성능측정·분석 자동화 워크플로우 설계",
+    "description": "성능측정 데이터 입력, 정제, 분석, 결과 요약, 리포트/메일 생성을 자동화 워크플로우로 설계한다.",
+    "status": "planned",
+    "progress": 25,
+    "category": "Performance Automation",
+    "targetDate": "2026-06-13",
+    "createdAt": "2026-06-12T14:00:00+09:00",
+    "updatedAt": "2026-06-12T14:00:00+09:00",
+    "relatedGoalId": "goal-weekly-001",
+    "relatedModuleId": "module-performance-analysis-workflow",
+    "dataSource": "mock",
+    "futureTableName": "ai_applications",
+    "automationReady": true,
+    "businessProblem": "성능측정 이후 분석과 리포트 정리가 수작업으로 이어져 반복 시간이 발생한다.",
+    "aiSolvableForm": "성능측정 → 데이터 정제 → 분석 로직 적용 → 결과 요약 → 리포트/메일 생성 단계를 자동화 워크플로우로 구조화한다.",
+    "requiredSkills": [
+      "워크플로우 설계",
+      "데이터 정제",
+      "분석 로직 구조화",
+      "리포트 자동 생성"
+    ],
+    "expectedAutomationEffect": "반복 분석·정리 시간을 줄이고 리포트 생성까지의 리드타임을 단축한다.",
+    "targetWork": "성능측정, 분석, 리포트 작성 업무",
+    "relatedLearningModuleIds": [
+      "module-performance-analysis-workflow"
+    ],
+    "automationScore": 68
+  },
+  {
+    "id": "ai-2026-06-14-performance-milestones",
+    "title": "AI/AX 적용: 성능측정 자동화 구현 마일스톤 구체화",
+    "description": "수작업 프로세스 문서화부터 리포트 자동화와 FTE 절감 효과 산정까지 구현 단계를 구체화한다.",
+    "status": "planned",
+    "progress": 20,
+    "category": "Implementation",
+    "targetDate": "2026-06-14",
+    "createdAt": "2026-06-12T14:00:00+09:00",
+    "updatedAt": "2026-06-12T14:00:00+09:00",
+    "relatedGoalId": "goal-weekly-001",
+    "relatedModuleId": "module-performance-milestones",
+    "dataSource": "mock",
+    "futureTableName": "ai_applications",
+    "automationReady": true,
+    "businessProblem": "성능측정·분석 자동화 아이디어가 구현 단계로 쪼개지지 않으면 실행 계획으로 전환되기 어렵다.",
+    "aiSolvableForm": "현재 업무 흐름을 입력값, 결과값, 반복 판단 구간으로 분해하고 MVP 검증과 FTE 절감 산정 단계로 나눈다.",
+    "requiredSkills": [
+      "프로세스 문서화",
+      "MVP 워크플로우 설계",
+      "샘플 데이터 검증",
+      "FTE 절감 효과 산정"
+    ],
+    "expectedAutomationEffect": "자동화 가능성이 큰 단계를 우선순위화하고 구현 마일스톤을 실행 가능한 단위로 만든다.",
+    "targetWork": "성능측정·분석 자동화 구현 프로세스 설계",
+    "relatedLearningModuleIds": [
+      "module-performance-milestones"
+    ],
+    "automationScore": 64
+  }
+]
