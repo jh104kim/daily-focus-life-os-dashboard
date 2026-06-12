@@ -22,11 +22,14 @@ import type {
   DailyFocusPlan,
   EvidenceLog,
   EvidenceLogCreateInput,
+  InvestmentReportLog,
+  InvestmentSummaryLog,
   JsonFileDiff,
   LearningModule,
   Reflection,
   ReminderTask,
   SelectedImportChange,
+  WeeklyNewsSummaryLog,
 } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -143,6 +146,9 @@ async function readContext() {
     abTestLogs: await readJsonFile<ABTestLog>("ab-test-logs.json"),
     aiFrameworkChecks: await readJsonFile<AIFrameworkCheck>("ai-framework-checks.json"),
     reminderTasks: await readJsonFile<ReminderTask>("reminder-tasks.json"),
+    weeklyNewsSummaries: await readJsonFile<WeeklyNewsSummaryLog>("news-summary-logs.json"),
+    investmentReportLogs: await readJsonFile<InvestmentReportLog>("investment-report-logs.json"),
+    investmentSummaryLogs: await readJsonFile<InvestmentSummaryLog>("investment-summary-logs.json"),
   };
 }
 
@@ -185,6 +191,18 @@ async function persistPreview(preview: AutomationImportPreview): Promise<string[
     await upsertJsonById("reminder-tasks.json", preview.reminderTask);
     updated.add("data/reminder-tasks.json");
   }
+  if (preview.weeklyNewsSummary) {
+    await upsertJsonByWeek("news-summary-logs.json", preview.weeklyNewsSummary);
+    updated.add("data/news-summary-logs.json");
+  }
+  if (preview.investmentReportLog) {
+    await upsertJsonByWeek("investment-report-logs.json", preview.investmentReportLog);
+    updated.add("data/investment-report-logs.json");
+  }
+  if (preview.investmentSummaryLog) {
+    await upsertJsonByWeek("investment-summary-logs.json", preview.investmentSummaryLog);
+    updated.add("data/investment-summary-logs.json");
+  }
 
   return Array.from(updated);
 }
@@ -206,6 +224,9 @@ function buildExpectedDiff(
     abTestLogs: [...context.abTestLogs],
     aiFrameworkChecks: [...context.aiFrameworkChecks],
     reminderTasks: [...context.reminderTasks],
+    weeklyNewsSummaries: [...context.weeklyNewsSummaries],
+    investmentReportLogs: [...context.investmentReportLogs],
+    investmentSummaryLogs: [...context.investmentSummaryLogs],
   };
 
   if (preview.dailyFocusPlan) {
@@ -268,6 +289,15 @@ function buildExpectedDiff(
   if (preview.reminderTask) {
     expected.reminderTasks = upsertById(expected.reminderTasks, preview.reminderTask);
   }
+  if (preview.weeklyNewsSummary) {
+    expected.weeklyNewsSummaries = upsertByWeek(expected.weeklyNewsSummaries, preview.weeklyNewsSummary);
+  }
+  if (preview.investmentReportLog) {
+    expected.investmentReportLogs = upsertByWeek(expected.investmentReportLogs, preview.investmentReportLog);
+  }
+  if (preview.investmentSummaryLog) {
+    expected.investmentSummaryLogs = upsertByWeek(expected.investmentSummaryLogs, preview.investmentSummaryLog);
+  }
 
   return buildContextDiff(context, expected, preview.targetFiles);
 }
@@ -326,6 +356,18 @@ function buildContextDiff(
       "targetDate|title",
       "id",
     ]),
+    buildJsonDiff("news-summary-logs.json", toRecords(before.weeklyNewsSummaries), toRecords(after.weeklyNewsSummaries), [
+      "targetWeek",
+      "id",
+    ]),
+    buildJsonDiff("investment-report-logs.json", toRecords(before.investmentReportLogs), toRecords(after.investmentReportLogs), [
+      "targetWeek",
+      "id",
+    ]),
+    buildJsonDiff("investment-summary-logs.json", toRecords(before.investmentSummaryLogs), toRecords(after.investmentSummaryLogs), [
+      "targetWeek",
+      "id",
+    ]),
   ];
 
   return diffs
@@ -350,6 +392,10 @@ function upsertByDate<T extends { id: string; targetDate: string }>(
     current.targetDate,
     dateField ? String(current[dateField]) : undefined,
   ]);
+}
+
+function upsertByWeek<T extends { id: string; targetWeek: string }>(items: T[], item: T): T[] {
+  return upsertJsonRecord(items, item, (current) => [current.id, current.targetWeek]);
 }
 
 function writeAtIndex<T>(items: T[], item: T, index: number): T[] {
@@ -501,6 +547,17 @@ function createEvidenceLog(
 async function upsertJsonById<T extends { id: string }>(fileName: string, item: T) {
   const items = await readJsonFile<T>(fileName);
   await writeJsonFile(fileName, upsertJsonRecord(items, item, (current) => current.id));
+}
+
+async function upsertJsonByWeek<T extends { id: string; targetWeek: string }>(
+  fileName: string,
+  item: T,
+) {
+  const items = await readJsonFile<T>(fileName);
+  await writeJsonFile(
+    fileName,
+    upsertJsonRecord(items, item, (current) => [current.id, current.targetWeek]),
+  );
 }
 
 async function upsertJsonByDate<T extends { id: string; targetDate: string }>(

@@ -14,7 +14,10 @@ type PreviewRecordKey =
   | "briefLog"
   | "abTestLog"
   | "aiFrameworkCheck"
-  | "reminderTask";
+  | "reminderTask"
+  | "weeklyNewsSummary"
+  | "investmentReportLog"
+  | "investmentSummaryLog";
 
 const fileToPreviewKey: Record<string, PreviewRecordKey> = {
   "daily-focus-plans.json": "dailyFocusPlan",
@@ -24,6 +27,9 @@ const fileToPreviewKey: Record<string, PreviewRecordKey> = {
   "ab-test-logs.json": "abTestLog",
   "ai-framework-checks.json": "aiFrameworkCheck",
   "reminder-tasks.json": "reminderTask",
+  "news-summary-logs.json": "weeklyNewsSummary",
+  "investment-report-logs.json": "investmentReportLog",
+  "investment-summary-logs.json": "investmentSummaryLog",
 };
 
 const requiredFields = new Set([
@@ -34,11 +40,15 @@ const requiredFields = new Set([
   "progress",
   "category",
   "targetDate",
+  "targetWeek",
+  "generatedAt",
   "createdAt",
   "updatedAt",
   "dataSource",
   "futureTableName",
   "automationReady",
+  "sourceAutomationType",
+  "importBatchId",
 ]);
 
 const inputIdentityFields = new Set([

@@ -1,0 +1,25 @@
+# Send weekly news summary - 2026-06-15
+
+## 한국 뉴스 Top 10
+- 반도체 수출 회복세 지속
+- 전력망 투자 계획 발표
+
+## 미국 뉴스 Top 10
+- 연준 금리 동결 시사
+- 빅테크 실적 발표 시즌 시작
+
+## 글로벌 뉴스 Top 10
+- 유럽 AI 규제 시행령 확정
+
+## AI 뉴스 Top 10
+- Claude 신규 모델 발표
+- 사내 AX 과제 확산 사례 공개
+
+## 요약
+- 이번 주는 금리 동결 기조와 AI 규제 확정이 핵심.
+
+[Dashboard Import Hint]
+automationType: weekly_news_summary
+targetDate: 2026-06-15
+primaryJson: news-summary-logs.json
+relatedJson: evidence-logs.json

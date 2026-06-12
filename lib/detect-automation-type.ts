@@ -62,6 +62,30 @@ export function detectAutomationType(text: string): AutomationType {
   }
 
   if (
+    normalized.includes("weeklynewssummary") ||
+    normalized.includes("주간뉴스요약") ||
+    (normalized.includes("한국뉴스") && normalized.includes("ai뉴스"))
+  ) {
+    return "weekly_news_summary";
+  }
+
+  if (
+    normalized.includes("weeklyetfreport") ||
+    normalized.includes("etf리포트") ||
+    normalized.includes("etf/포트폴리오리포트")
+  ) {
+    return "weekly_etf_report_check";
+  }
+
+  if (
+    normalized.includes("weeklyinvestmentsummary") ||
+    normalized.includes("주간투자요약") ||
+    normalized.includes("계좌별필요금액")
+  ) {
+    return "weekly_investment_summary";
+  }
+
+  if (
     normalized.includes("dailyfocusupdate") ||
     normalized.includes("진행률업데이트") ||
     normalized.includes("reviewnotes") ||

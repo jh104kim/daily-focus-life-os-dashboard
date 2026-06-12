@@ -16,9 +16,12 @@ import type {
   DailyFocusPlan,
   EvidenceLog,
   EvidenceLogCreateInput,
+  InvestmentReportLog,
+  InvestmentSummaryLog,
   LearningModule,
   Reflection,
   ReminderTask,
+  WeeklyNewsSummaryLog,
 } from "./types";
 
 export interface AutomationParseContext {
@@ -32,6 +35,9 @@ export interface AutomationParseContext {
   abTestLogs?: ABTestLog[];
   aiFrameworkChecks?: AIFrameworkCheck[];
   reminderTasks?: ReminderTask[];
+  weeklyNewsSummaries?: WeeklyNewsSummaryLog[];
+  investmentReportLogs?: InvestmentReportLog[];
+  investmentSummaryLogs?: InvestmentSummaryLog[];
 }
 
 export function parseAutomationUnified(
@@ -66,6 +72,18 @@ export function parseAutomationUnified(
 
   if (automationType === "reminder_task") {
     return applyDashboardImportHint(parseReminderTask(text, base, sourceTitle, context), hint);
+  }
+
+  if (automationType === "weekly_news_summary") {
+    return applyDashboardImportHint(parseWeeklyNewsSummary(text, base, sourceTitle, context), hint);
+  }
+
+  if (automationType === "weekly_etf_report_check") {
+    return applyDashboardImportHint(parseWeeklyEtfReportCheck(text, base, sourceTitle, context), hint);
+  }
+
+  if (automationType === "weekly_investment_summary") {
+    return applyDashboardImportHint(parseWeeklyInvestmentSummary(text, base, sourceTitle, context), hint);
   }
 
   return applyDashboardImportHint({
@@ -405,6 +423,191 @@ function parseReminderTask(
       reminderTask: Boolean(context.reminderTasks?.some((item) => item.id === reminderTask.id)),
     },
   });
+}
+
+function parseWeeklyNewsSummary(
+  text: string,
+  base: ReturnType<typeof createBase>,
+  sourceTitle: string,
+  context: AutomationParseContext,
+): AutomationImportPreview {
+  const targetWeek = getWeekKey(base.date);
+  const koreaNews = sectionLines(text, ["한국 뉴스", "한국 Top 10", "Korea News"]);
+  const usNews = sectionLines(text, ["미국 뉴스", "미국 Top 10", "US News"]);
+  const globalNews = sectionLines(text, ["글로벌 뉴스", "글로벌 Top 10", "Global News"]);
+  const aiNews = sectionLines(text, ["AI 뉴스", "AI News"]);
+  const summary = sectionFirst(text, ["요약", "Summary"]);
+  const weeklyNewsSummary: WeeklyNewsSummaryLog = {
+    id: `news-summary-${targetWeek}`,
+    targetWeek,
+    generatedAt: base.entity.createdAt,
+    koreaNews,
+    usNews,
+    globalNews,
+    aiNews,
+    summary,
+    sourceAutomationType: "weekly_news_summary",
+    dataSource: "chatgpt_automation",
+  };
+
+  return withCommon({
+    automationType: "weekly_news_summary",
+    targetDate: base.date,
+    sourceTitle,
+    targetFiles: ["data/news-summary-logs.json", "data/evidence-logs.json"],
+    weeklyNewsSummary,
+    evidenceLogs: [
+      automationEvidence(base.date, sourceTitle, `주간 뉴스 요약 저장 (${targetWeek})`),
+    ],
+    missingFields: [
+      koreaNews.length ? "" : "한국 뉴스",
+      usNews.length ? "" : "미국 뉴스",
+      globalNews.length ? "" : "글로벌 뉴스",
+      aiNews.length ? "" : "AI 뉴스",
+      summary ? "" : "요약",
+    ].filter(Boolean),
+    autoFilledFields: extractDate(text) ? [] : [`targetDate: ${base.date}`],
+    overwrite: {
+      weeklyNewsSummary: Boolean(
+        context.weeklyNewsSummaries?.some((item) => item.targetWeek === targetWeek),
+      ),
+    },
+  });
+}
+
+function parseWeeklyEtfReportCheck(
+  text: string,
+  base: ReturnType<typeof createBase>,
+  sourceTitle: string,
+  context: AutomationParseContext,
+): AutomationImportPreview {
+  const targetWeek = getWeekKey(base.date);
+  const reportUrl =
+    sectionFirst(text, ["리포트 링크", "리포트 URL", "reportUrl"]) || extractUrl(text) || "";
+  const keyChanges = sectionLines(text, ["주요 변화", "주요 변경", "Key Changes"]);
+  const actionItems = sectionLines(text, ["Action Items", "후속 조치", "액션 아이템"]);
+  const summary = sectionFirst(text, ["요약", "Summary"]);
+  const investmentReportLog: InvestmentReportLog = {
+    id: `etf-report-${targetWeek}`,
+    targetWeek,
+    reportType:
+      sectionFirst(text, ["리포트 유형", "리포트 종류", "reportType"]) ||
+      "weekly_etf_portfolio_report",
+    reportUrl,
+    keyChanges,
+    summary,
+    actionItems,
+    sourceAutomationType: "weekly_etf_report_check",
+    dataSource: "chatgpt_automation",
+  };
+
+  return withCommon({
+    automationType: "weekly_etf_report_check",
+    targetDate: base.date,
+    sourceTitle,
+    targetFiles: ["data/investment-report-logs.json", "data/evidence-logs.json"],
+    investmentReportLog,
+    evidenceLogs: [
+      automationEvidence(base.date, sourceTitle, `주간 ETF 리포트 확인 저장 (${targetWeek})`),
+    ],
+    missingFields: [
+      reportUrl ? "" : "리포트 링크",
+      keyChanges.length ? "" : "주요 변화",
+      summary ? "" : "요약",
+    ].filter(Boolean),
+    autoFilledFields: extractDate(text) ? [] : [`targetDate: ${base.date}`],
+    overwrite: {
+      investmentReportLog: Boolean(
+        context.investmentReportLogs?.some((item) => item.targetWeek === targetWeek),
+      ),
+    },
+  });
+}
+
+function parseWeeklyInvestmentSummary(
+  text: string,
+  base: ReturnType<typeof createBase>,
+  sourceTitle: string,
+  context: AutomationParseContext,
+): AutomationImportPreview {
+  const targetWeek = getWeekKey(base.date);
+  const accountLines = sectionLines(text, ["계좌별 필요 금액", "계좌별 필요 현금"]);
+  const requiredCashByAccount: Record<string, number> = {};
+  for (const line of accountLines) {
+    const match = line.match(/^([^:：]+)[:：]\s*(.+)$/);
+    if (match) {
+      requiredCashByAccount[match[1].trim()] = parseAmount(match[2]);
+    }
+  }
+  const accounts = Object.keys(requiredCashByAccount);
+  const assetNews = sectionLines(text, ["자산별 뉴스", "자산별 소식"]).map((line) => {
+    const match = line.match(/^([^:：]+)[:：]\s*(.+)$/);
+    const sourceUrl = line.match(/https?:\/\/\S+/)?.[0];
+    return {
+      asset: match ? match[1].trim() : line,
+      summary: match ? match[2].replace(/https?:\/\/\S+/, "").trim() : "",
+      sourceUrl,
+    };
+  });
+  const actionItems = sectionLines(text, ["Action Items", "후속 조치", "액션 아이템"]);
+  const summary = sectionFirst(text, ["요약", "Summary"]);
+  const investmentSummaryLog: InvestmentSummaryLog = {
+    id: `investment-summary-${targetWeek}`,
+    targetWeek,
+    accounts,
+    requiredCashByAccount,
+    grandTotalKrw: parseAmount(sectionFirst(text, ["총 필요 금액", "총합"])),
+    fxRate: parseAmount(sectionFirst(text, ["환율", "USD/KRW"])),
+    assetNews,
+    actionItems,
+    summary,
+    sourceAutomationType: "weekly_investment_summary",
+    dataSource: "chatgpt_automation",
+  };
+
+  return withCommon({
+    automationType: "weekly_investment_summary",
+    targetDate: base.date,
+    sourceTitle,
+    targetFiles: ["data/investment-summary-logs.json", "data/evidence-logs.json"],
+    investmentSummaryLog,
+    evidenceLogs: [
+      automationEvidence(base.date, sourceTitle, `주간 투자 요약 저장 (${targetWeek})`),
+    ],
+    missingFields: [
+      accounts.length ? "" : "계좌별 필요 금액",
+      investmentSummaryLog.grandTotalKrw ? "" : "총 필요 금액",
+      summary ? "" : "요약",
+    ].filter(Boolean),
+    autoFilledFields: extractDate(text) ? [] : [`targetDate: ${base.date}`],
+    overwrite: {
+      investmentSummaryLog: Boolean(
+        context.investmentSummaryLogs?.some((item) => item.targetWeek === targetWeek),
+      ),
+    },
+  });
+}
+
+function parseAmount(value: string): number {
+  const digits = value.replace(/[^0-9.]/g, "");
+  return digits ? Number(digits) : 0;
+}
+
+function sectionLines(text: string, aliases: string[]): string[] {
+  const all = lines(section(text, aliases));
+  const hintIndex = all.findIndex((line) => line.startsWith("[Dashboard Import Hint]"));
+  const items = hintIndex >= 0 ? all.slice(0, hintIndex) : all;
+  if (
+    items.length &&
+    aliases.some((alias) => normalize(items[0]).startsWith(normalize(alias)))
+  ) {
+    return items.slice(1);
+  }
+  return items;
+}
+
+function sectionFirst(text: string, aliases: string[]): string {
+  return sectionLines(text, aliases)[0] ?? "";
 }
 
 function withCommon(

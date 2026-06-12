@@ -26,6 +26,9 @@ const expectedTypes: Array<[string, AutomationType]> = [
   ["reminder-task.txt", "reminder_task"],
   ["daily-focus-update.txt", "daily_focus_update"],
   ["daily-operation-log.txt", "daily_operation_log"],
+  ["weekly-news-summary.txt", "weekly_news_summary"],
+  ["weekly-etf-report-check.txt", "weekly_etf_report_check"],
+  ["weekly-investment-summary.txt", "weekly_investment_summary"],
   ["unknown.txt", "unknown"],
 ];
 
@@ -55,6 +58,7 @@ function main() {
   testDetectAutomationType();
   testSplitAutomationBulkText();
   testParseAutomationUnified();
+  testParseWeeklyAutomations();
   testParseDailyFocusUpdate();
   testParseDailyOperationText();
   testParseBulkAutomationImport();
@@ -95,6 +99,41 @@ function testParseAutomationUnified() {
   const unknown = parseAutomationUnified(fixture("unknown.txt"), { selectedDate: "2026-06-15" });
   assertEqual(unknown.automationType, "unknown", "unknown unified type");
   assertEqual(unknown.targetFiles.length, 0, "unknown target files");
+}
+
+function testParseWeeklyAutomations() {
+  const news = parseAutomationUnified(fixture("weekly-news-summary.txt"), {
+    selectedDate: "2026-06-15",
+  });
+  assertEqual(news.weeklyNewsSummary?.targetWeek, "2026-06-15", "weekly news targetWeek");
+  assertEqual(news.weeklyNewsSummary?.koreaNews.length, 2, "weekly news korea count");
+  assertEqual(news.weeklyNewsSummary?.aiNews.length, 2, "weekly news ai count");
+  assertEqual(news.targetFiles[0], "data/news-summary-logs.json", "weekly news target");
+  assertEqual(news.missingFields.length, 0, "weekly news missing fields");
+
+  const etf = parseAutomationUnified(fixture("weekly-etf-report-check.txt"), {
+    selectedDate: "2026-06-15",
+  });
+  assertEqual(
+    etf.investmentReportLog?.reportUrl,
+    "https://example.com/etf-report/2026-06-15.html",
+    "etf report url",
+  );
+  assertEqual(etf.investmentReportLog?.keyChanges.length, 2, "etf key changes count");
+  assertEqual(etf.targetFiles[0], "data/investment-report-logs.json", "etf report target");
+
+  const invest = parseAutomationUnified(fixture("weekly-investment-summary.txt"), {
+    selectedDate: "2026-06-15",
+  });
+  assertEqual(invest.investmentSummaryLog?.grandTotalKrw, 1200000, "investment grand total");
+  assertEqual(invest.investmentSummaryLog?.fxRate, 1350.5, "investment fx rate");
+  assertEqual(invest.investmentSummaryLog?.accounts.length, 3, "investment accounts count");
+  assertEqual(
+    invest.investmentSummaryLog?.requiredCashByAccount["ISA"],
+    500000,
+    "investment ISA cash",
+  );
+  assertEqual(invest.investmentSummaryLog?.assetNews.length, 2, "investment asset news count");
 }
 
 function testParseDailyFocusUpdate() {
@@ -165,8 +204,20 @@ function testFullAutomationInputsFixture() {
   });
 
   assertEqual(parsed.detectedBlockCount, 12, "full automation fixture block count");
-  assertEqual(parsed.parsedBlockCount, 9, "full automation fixture parsed count");
-  assertEqual(parsed.unknownBlockCount, 3, "full automation fixture unknown count");
+  assertEqual(parsed.parsedBlockCount, 12, "full automation fixture parsed count");
+  assertEqual(parsed.unknownBlockCount, 0, "full automation fixture unknown count");
+  assert(
+    parsed.targetFiles.includes("data/news-summary-logs.json"),
+    "full fixture weekly news target",
+  );
+  assert(
+    parsed.targetFiles.includes("data/investment-report-logs.json"),
+    "full fixture etf report target",
+  );
+  assert(
+    parsed.targetFiles.includes("data/investment-summary-logs.json"),
+    "full fixture investment summary target",
+  );
   assert(
     parsed.blocks.every((block) => !/^Oflow Morning Brief - YYYY-MM-DD$/.test(block.sourceTitle)),
     "fenced markdown headings are not split into blocks",

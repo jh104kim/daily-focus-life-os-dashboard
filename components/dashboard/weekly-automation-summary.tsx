@@ -29,9 +29,9 @@ export function WeeklyAutomationSummary({
       targetJson: "data/news-summary-logs.json",
       weekKey,
       recordCount: newsSummaries.filter((item) => item.targetWeek === weekKey).length,
-      emptyDescription: "뉴스 요약: 데이터 없음 / parser pending",
+      emptyDescription: "뉴스 요약: 이번 주 데이터 없음",
       readyDescription: "이번 주 뉴스 요약 데이터가 준비되어 있습니다.",
-      nextAction: "사용 빈도 확인 후 weekly_news_summary parser 구현 검토",
+      nextAction: "/import에 주간 뉴스 요약 결과를 붙여넣어 저장",
     }),
     createStatus({
       title: "ETF Report Check",
@@ -39,9 +39,9 @@ export function WeeklyAutomationSummary({
       targetJson: "data/investment-report-logs.json",
       weekKey,
       recordCount: investmentReports.filter((item) => item.targetWeek === weekKey).length,
-      emptyDescription: "ETF 리포트: 데이터 없음 / parser pending",
+      emptyDescription: "ETF 리포트: 이번 주 데이터 없음",
       readyDescription: "이번 주 ETF 리포트 확인 데이터가 준비되어 있습니다.",
-      nextAction: "ETF 리포트 원문 구조 확정 후 parser 구현 검토",
+      nextAction: "/import에 주간 ETF 리포트 확인 결과를 붙여넣어 저장",
     }),
     createStatus({
       title: "Investment Summary",
@@ -49,9 +49,9 @@ export function WeeklyAutomationSummary({
       targetJson: "data/investment-summary-logs.json",
       weekKey,
       recordCount: investmentSummaries.filter((item) => item.targetWeek === weekKey).length,
-      emptyDescription: "투자 요약: 데이터 없음 / parser pending",
+      emptyDescription: "투자 요약: 이번 주 데이터 없음",
       readyDescription: "이번 주 투자 요약 데이터가 준비되어 있습니다.",
-      nextAction: "투자 계좌/환율 필드 확정 후 parser 구현 검토",
+      nextAction: "/import에 주간 투자 요약 결과를 붙여넣어 저장",
     }),
   ];
 
@@ -147,7 +147,7 @@ function createStatus({
 }
 
 function getStatus(recordCount: number): WeeklyAutomationStatusCode {
-  return recordCount > 0 ? "ready" : "parser_pending";
+  return recordCount > 0 ? "ready" : "no_data";
 }
 
 function StatusPill({ status }: { status: WeeklyAutomationStatusCode }) {

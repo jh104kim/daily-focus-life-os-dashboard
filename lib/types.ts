@@ -129,6 +129,9 @@ export type AutomationType =
   | "reminder_task"
   | "daily_focus_update"
   | "daily_operation_log"
+  | "weekly_news_summary"
+  | "weekly_etf_report_check"
+  | "weekly_investment_summary"
   | "unknown";
 
 export type DeferredAutomationType =
@@ -367,6 +370,9 @@ export interface AutomationImportPreview {
   abTestLog?: ABTestLog;
   aiFrameworkCheck?: AIFrameworkCheck;
   reminderTask?: ReminderTask;
+  weeklyNewsSummary?: WeeklyNewsSummaryLog;
+  investmentReportLog?: InvestmentReportLog;
+  investmentSummaryLog?: InvestmentSummaryLog;
   missingFields: string[];
   autoFilledFields: string[];
   warnings: string[];

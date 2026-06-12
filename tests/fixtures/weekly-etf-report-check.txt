@@ -1,0 +1,22 @@
+# Check weekly ETF report - 2026-06-15
+
+## 리포트 정보
+- 리포트 유형: weekly_etf_portfolio_report
+- 리포트 링크: https://example.com/etf-report/2026-06-15.html
+
+## 주요 변화
+- S&P500 비중 1.2%p 증가
+- 환헤지 ETF 평가액 감소
+
+## 요약
+- 미국 주식 비중이 목표 범위 상단에 도달.
+
+## Action Items
+- 리밸런싱 기준 확인
+- 다음 주 매수 금액 재계산
+
+[Dashboard Import Hint]
+automationType: weekly_etf_report_check
+targetDate: 2026-06-15
+primaryJson: investment-report-logs.json
+relatedJson: evidence-logs.json

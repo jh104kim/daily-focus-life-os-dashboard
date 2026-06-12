@@ -174,16 +174,81 @@ relatedJson: reflections.json,evidence-logs.json
 
 # 10. Send weekly news summary
 
-This weekly news automation is intentionally unsupported by dashboard import.
+automationType: weekly_news_summary
+
+## 한국 뉴스 Top 10
+- 반도체 수출 회복세 지속
+
+## 미국 뉴스 Top 10
+- 연준 금리 동결 시사
+
+## 글로벌 뉴스 Top 10
+- 유럽 AI 규제 시행령 확정
+
+## AI 뉴스 Top 10
+- Claude 신규 모델 발표
+
+## 요약
+- 이번 주는 금리 동결 기조와 AI 규제 확정이 핵심.
+
+[Dashboard Import Hint]
+automationType: weekly_news_summary
+targetDate: YYYY-MM-DD
+primaryJson: news-summary-logs.json
+relatedJson: evidence-logs.json
 
 ---
 
 # 11. Check weekly ETF report
 
-This ETF report automation is intentionally unsupported by dashboard import.
+automationType: weekly_etf_report_check
+
+## 리포트 정보
+- 리포트 유형: weekly_etf_portfolio_report
+- 리포트 링크: https://example.com/etf-report/latest.html
+
+## 주요 변화
+- S&P500 비중 1.2%p 증가
+
+## 요약
+- 미국 주식 비중이 목표 범위 상단에 도달.
+
+## Action Items
+- 리밸런싱 기준 확인
+
+[Dashboard Import Hint]
+automationType: weekly_etf_report_check
+targetDate: YYYY-MM-DD
+primaryJson: investment-report-logs.json
+relatedJson: evidence-logs.json
 
 ---
 
 # 12. Send weekly investment summary
 
-This weekly investment summary automation is intentionally unsupported by dashboard import.
+automationType: weekly_investment_summary
+
+## 계좌별 필요 금액
+- ISA: 500,000원
+- 연금저축: 300,000원
+
+## 환율
+- USD/KRW: 1,350.5
+
+## 총 필요 금액
+- 800,000원
+
+## 자산별 뉴스
+- TIGER S&P500: 지수 사상 최고치 경신
+
+## Action Items
+- 월요일 장 시작 전 이체 완료
+
+## 요약
+- 이번 주 정기 매수에 총 80만원 필요.
+
+[Dashboard Import Hint]
+automationType: weekly_investment_summary
+targetDate: YYYY-MM-DD
+primaryJson: investment-summary-logs.json
+relatedJson: evidence-logs.json

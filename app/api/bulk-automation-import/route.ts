@@ -23,11 +23,14 @@ import type {
   DailyFocusPlan,
   EvidenceLog,
   EvidenceLogCreateInput,
+  InvestmentReportLog,
+  InvestmentSummaryLog,
   JsonFileDiff,
   LearningModule,
   Reflection,
   ReminderTask,
   SelectedImportChange,
+  WeeklyNewsSummaryLog,
 } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -154,6 +157,9 @@ async function readContext() {
     abTestLogs: await readJsonFile<ABTestLog>("ab-test-logs.json"),
     aiFrameworkChecks: await readJsonFile<AIFrameworkCheck>("ai-framework-checks.json"),
     reminderTasks: await readJsonFile<ReminderTask>("reminder-tasks.json"),
+    weeklyNewsSummaries: await readJsonFile<WeeklyNewsSummaryLog>("news-summary-logs.json"),
+    investmentReportLogs: await readJsonFile<InvestmentReportLog>("investment-report-logs.json"),
+    investmentSummaryLogs: await readJsonFile<InvestmentSummaryLog>("investment-summary-logs.json"),
   };
 }
 
@@ -182,6 +188,9 @@ function applyPreviewsToContext(
     abTestLogs: [...context.abTestLogs],
     aiFrameworkChecks: [...context.aiFrameworkChecks],
     reminderTasks: [...context.reminderTasks],
+    weeklyNewsSummaries: [...context.weeklyNewsSummaries],
+    investmentReportLogs: [...context.investmentReportLogs],
+    investmentSummaryLogs: [...context.investmentSummaryLogs],
   };
   const now = new Date().toISOString();
 
@@ -229,6 +238,15 @@ function applyPreviewsToContext(
     }
     if (preview.reminderTask) {
       next.reminderTasks = upsertById(next.reminderTasks, preview.reminderTask);
+    }
+    if (preview.weeklyNewsSummary) {
+      next.weeklyNewsSummaries = upsertByWeek(next.weeklyNewsSummaries, preview.weeklyNewsSummary);
+    }
+    if (preview.investmentReportLog) {
+      next.investmentReportLogs = upsertByWeek(next.investmentReportLogs, preview.investmentReportLog);
+    }
+    if (preview.investmentSummaryLog) {
+      next.investmentSummaryLogs = upsertByWeek(next.investmentSummaryLogs, preview.investmentSummaryLog);
     }
   }
 
@@ -338,6 +356,9 @@ async function writeChangedContext(before: ImportContext, after: ImportContext, 
     ["ab-test-logs.json", "abTestLogs"],
     ["ai-framework-checks.json", "aiFrameworkChecks"],
     ["reminder-tasks.json", "reminderTasks"],
+    ["news-summary-logs.json", "weeklyNewsSummaries"],
+    ["investment-report-logs.json", "investmentReportLogs"],
+    ["investment-summary-logs.json", "investmentSummaryLogs"],
   ];
 
   for (const [fileName, key] of writers) {
@@ -365,6 +386,9 @@ function buildContextDiff(before: ImportContext, after: ImportContext, targetFil
     buildJsonDiff("ab-test-logs.json", toRecords(before.abTestLogs), toRecords(after.abTestLogs), ["testDate|variant", "targetDate|phrase", "id"]),
     buildJsonDiff("ai-framework-checks.json", toRecords(before.aiFrameworkChecks), toRecords(after.aiFrameworkChecks), ["checkDate|topic", "targetDate|topic", "id"]),
     buildJsonDiff("reminder-tasks.json", toRecords(before.reminderTasks), toRecords(after.reminderTasks), ["reminderDate|title", "targetDate|title", "id"]),
+    buildJsonDiff("news-summary-logs.json", toRecords(before.weeklyNewsSummaries), toRecords(after.weeklyNewsSummaries), ["targetWeek", "id"]),
+    buildJsonDiff("investment-report-logs.json", toRecords(before.investmentReportLogs), toRecords(after.investmentReportLogs), ["targetWeek", "id"]),
+    buildJsonDiff("investment-summary-logs.json", toRecords(before.investmentSummaryLogs), toRecords(after.investmentSummaryLogs), ["targetWeek", "id"]),
   ];
   return diffs.filter((diff) => targetSet.has(diff.fileName)).filter((diff) => diff.added.length || diff.updated.length || diff.removed.length);
 }
@@ -383,6 +407,10 @@ function upsertByDate<T extends { id: string; targetDate: string }>(
     current.targetDate,
     dateField ? String(current[dateField]) : undefined,
   ]);
+}
+
+function upsertByWeek<T extends { id: string; targetWeek: string }>(items: T[], item: T): T[] {
+  return upsertJsonRecord(items, item, (current) => [current.id, current.targetWeek]);
 }
 
 function writeAtIndex<T>(items: T[], item: T, index: number): T[] {
@@ -406,7 +434,10 @@ function hasAnySaveTarget(preview: AutomationImportPreview) {
       preview.briefLog ||
       preview.abTestLog ||
       preview.aiFrameworkCheck ||
-      preview.reminderTask,
+      preview.reminderTask ||
+      preview.weeklyNewsSummary ||
+      preview.investmentReportLog ||
+      preview.investmentSummaryLog,
   );
 }
 

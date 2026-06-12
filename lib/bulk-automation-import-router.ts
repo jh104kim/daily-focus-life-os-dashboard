@@ -72,6 +72,14 @@ function enrichPreview(
       importBlockId: block.importBlockId,
     };
   };
+  const applyWeekly = <T extends { importBatchId?: string }>(
+    record: T | undefined,
+  ): T | undefined => {
+    if (!record) {
+      return undefined;
+    }
+    return { ...record, importBatchId };
+  };
 
   return {
     ...preview,
@@ -85,6 +93,9 @@ function enrichPreview(
     abTestLog: apply(preview.abTestLog),
     aiFrameworkCheck: apply(preview.aiFrameworkCheck),
     reminderTask: apply(preview.reminderTask),
+    weeklyNewsSummary: applyWeekly(preview.weeklyNewsSummary),
+    investmentReportLog: applyWeekly(preview.investmentReportLog),
+    investmentSummaryLog: applyWeekly(preview.investmentSummaryLog),
     reflection: preview.reflection
       ? {
           ...preview.reflection,

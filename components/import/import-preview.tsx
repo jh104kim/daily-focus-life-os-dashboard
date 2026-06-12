@@ -92,6 +92,9 @@ export function ImportPreview({
         <JsonBlock title="abTestLogs 미리보기" value={parsed.abTestLog} />
         <JsonBlock title="aiFrameworkChecks 미리보기" value={parsed.aiFrameworkCheck} />
         <JsonBlock title="reminderTasks 미리보기" value={parsed.reminderTask} />
+        <JsonBlock title="weeklyNewsSummaries 미리보기" value={parsed.weeklyNewsSummary} />
+        <JsonBlock title="investmentReportLogs 미리보기" value={parsed.investmentReportLog} />
+        <JsonBlock title="investmentSummaryLogs 미리보기" value={parsed.investmentSummaryLog} />
       </div>
     </section>
   );

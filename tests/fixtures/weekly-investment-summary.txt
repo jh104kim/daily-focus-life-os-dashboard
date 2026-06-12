@@ -1,0 +1,28 @@
+# Send weekly investment summary - 2026-06-15
+
+## 계좌별 필요 금액
+- ISA: 500,000원
+- 연금저축: 300,000원
+- 미국주식: 400,000원
+
+## 환율
+- USD/KRW: 1,350.5
+
+## 총 필요 금액
+- 1,200,000원
+
+## 자산별 뉴스
+- TIGER S&P500: 지수 사상 최고치 경신 https://example.com/news/spx
+- KODEX 미국나스닥100: 기술주 변동성 확대
+
+## Action Items
+- 월요일 장 시작 전 이체 완료
+
+## 요약
+- 이번 주 정기 매수에 총 120만원 필요.
+
+[Dashboard Import Hint]
+automationType: weekly_investment_summary
+targetDate: 2026-06-15
+primaryJson: investment-summary-logs.json
+relatedJson: evidence-logs.json
